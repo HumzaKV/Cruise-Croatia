@@ -1,8 +1,9 @@
+
 <?php 
-$prod_id = @$_POST['product_id'];
-$extension_ids = @$_POST['extensions'];
-$passengers = @$_POST['passenger'];
-$cabins = @$_POST['cabin'];
+$prod_id = $_POST['post_id'];
+$extension_ids = $_POST['extensions'];
+$passengers = $_POST['passenger'];
+$cabins = $_POST['cabin'];
 $ship = get_field('ship_type', $prod_id);
 $cruise_prices = get_field('field_6301f00fd87cb', $prod_id); // key: price
 $cruise_price = 0;
@@ -22,6 +23,8 @@ if( $cruise_prices ) {
 // Extensions
 if( $extension_ids ) {
 	$ext_data .= '<h4>Extensions</h4>';
+
+	$e_id = 36;
 	foreach($extension_ids as $extension) {
 		$_id = $extension['pid'];
 		$prices = get_field('price', $_id);
@@ -33,23 +36,35 @@ if( $extension_ids ) {
 				$extprice = ( $regular_price > $sale_price ? $sale_price : $regular_price );
 				$ext_price += ( $regular_price > $sale_price ? $sale_price : $regular_price );
 			}
-				else
-				{
+			else
+			{
 				$ext_price += $regular_price;
 				$extprice += $regular_price;	
-				}
+			}
 			// echo $ext_price;
 
 		}
 		$extprice = _currency_format($extprice, true);
-		$ext_data .= '<li><label>Extension Name: </label>'.$title.' <span><span><strong></br> Price: </strong>'.$extprice.'  </span></li>';
+		$ext_data .= '<li>'.$title.' <span><span><strong></br> Price: </strong>'.$extprice.'  </span></li>';
+		
+		// echo'
+		// <script>
+		// 	$("#input_20_'.$e_id.'").val( '. $title .' );
+		// 	'.$e_id++.'
+		// 	$("#input_20_'.$e_id.'").val( '. $extprice .' );
+		// 	'.$e_id++.'
+		// </script>';
+		echo '$("#input_20_'.$e_id.'").val( '. $title .' );';
+		$e_id++; 
+		echo '$("#input_20_'.$e_id.'").val( '. $extprice .' );';
+		$e_id++;
 	}
 }
 
 $passengerCost = $passengers * $cruise_price;
-$cabinCost = $cabins * $cruise_price + $cabinCost;
-echo 'cruise: '.$cruise_price;
-$totalCost = $passengerCost + $ext_price;
+$cabinCost = $cabins * $cruise_price;
+// echo 'cruise: '.$cruise_price;
+$totalCost = $passengerCost + $ext_price + $cabinCost;
 $totalCost = _currency_format($totalCost, true);
 $passengerCost = _currency_format($passengerCost, true);
 $cabinCost = _currency_format($cabinCost, true);
@@ -59,11 +74,13 @@ $extensionCost = _currency_format($ext_price, true);
 ?>
 <div id="contact_quote">
 	<ul>
-		<li><label>Ship:</label><span><?= $ship; ?></span></li>
+		<li><label>Ship:</label><span class="ship"><?= $ship; ?></span></li>
 		<li><label>Cruise:</label><span><span><?= get_the_title($prod_id) ?></span></li>
-		<li><label>Departure Date:</label><span><span><?= @$_POST['date']; ?></span></li>
-		<li><label>cabin:</label><span><span><?= $cabins; ?> x <?= $cruise_price ?>= </span><strong><?= $cabinCost; ?></strong></li>
-		<li><label>Guest:</label><span><span><?= @$_POST['passenger']; ?> x Passengers</span><strong><?= $passengerCost; ?></strong></li>
+		<li><label>Departure Date:</label><span><span class="date"><?= $_POST['date']; ?></span></li>
+		<input type="hidden" class="cabin" value="<?php echo $cabins ?>">
+		<li><label>cabin:</label><span><span><?= $cabins; ?> x Cabins</span><strong><?= $cabinCost; ?></strong></li>
+		<input type="hidden" class="paas" value="<?php echo $_POST['passenger'] ?>">
+		<li><label>Guest:</label><span><span><?= $_POST['passenger']; ?> x Passengers</span><strong><?= $passengerCost; ?></strong></li>
 		<?php echo $ext_data; ?>
 	</ul>
 	<div class="quotetotal">

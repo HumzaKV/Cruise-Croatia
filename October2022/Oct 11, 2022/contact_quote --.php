@@ -2,12 +2,11 @@
 $prod_id = @$_POST['product_id'];
 $extension_ids = @$_POST['extensions'];
 $passengers = @$_POST['passenger'];
-$cabins = @$_POST['cabin'];
 $ship = get_field('ship_type', $prod_id);
 $cruise_prices = get_field('field_6301f00fd87cb', $prod_id); // key: price
 $cruise_price = 0;
 $ext_price = 0;
-// print_r( get_option('cur_rate_conversion') );
+print_r( get_option('cur_rate_conversion') );
 
 // Cruise
 if( $cruise_prices ) {
@@ -34,25 +33,20 @@ if( $extension_ids ) {
 				$ext_price += ( $regular_price > $sale_price ? $sale_price : $regular_price );
 			}
 				else
-				{
 				$ext_price += $regular_price;
-				$extprice += $regular_price;	
-				}
+			
 			// echo $ext_price;
 
 		}
 		$extprice = _currency_format($extprice, true);
-		$ext_data .= '<li><label>Extension Name: </label>'.$title.' <span><span><strong></br> Price: </strong>'.$extprice.'  </span></li>';
+		$ext_data .= '<li><label>extension Name: </label>'.$title.' <span><span><strong> Price: </strong>'.$extprice.'  </span></li>';
 	}
 }
 
 $passengerCost = $passengers * $cruise_price;
-$cabinCost = $cabins * $cruise_price + $cabinCost;
-echo 'cruise: '.$cruise_price;
 $totalCost = $passengerCost + $ext_price;
 $totalCost = _currency_format($totalCost, true);
 $passengerCost = _currency_format($passengerCost, true);
-$cabinCost = _currency_format($cabinCost, true);
 $extensionCost = _currency_format($ext_price, true);
 
 // print_r($prices);
@@ -62,8 +56,8 @@ $extensionCost = _currency_format($ext_price, true);
 		<li><label>Ship:</label><span><?= $ship; ?></span></li>
 		<li><label>Cruise:</label><span><span><?= get_the_title($prod_id) ?></span></li>
 		<li><label>Departure Date:</label><span><span><?= @$_POST['date']; ?></span></li>
-		<li><label>cabin:</label><span><span><?= $cabins; ?> x <?= $cruise_price ?>= </span><strong><?= $cabinCost; ?></strong></li>
-		<li><label>Guest:</label><span><span><?= @$_POST['passenger']; ?> x Passengers</span><strong><?= $passengerCost; ?></strong></li>
+		<li><label>Cabin:</label><span><span><?= count($extension_ids); ?> x Cabins </span><strong><?= $extensionCost; ?></strong></li>
+		<li><label>Guest:</label><span><span><?= @$_POST['passenger']; ?> x Passengers </span><strong><?= $passengerCost; ?></strong></li>
 		<?php echo $ext_data; ?>
 	</ul>
 	<div class="quotetotal">

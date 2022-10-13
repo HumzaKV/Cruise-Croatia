@@ -1,8 +1,8 @@
 <?php 
-$prod_id = @$_POST['product_id'];
-$extension_ids = @$_POST['extensions'];
-$passengers = @$_POST['passenger'];
-$cabins = @$_POST['cabin'];
+$prod_id = $_POST['post_id'];
+$extension_ids = $_POST['extensions'];
+$passengers = $_POST['passenger'];
+$cabins = $_POST['cabin'];
 $ship = get_field('ship_type', $prod_id);
 $cruise_prices = get_field('field_6301f00fd87cb', $prod_id); // key: price
 $cruise_price = 0;
@@ -42,14 +42,14 @@ if( $extension_ids ) {
 
 		}
 		$extprice = _currency_format($extprice, true);
-		$ext_data .= '<li><label>Extension Name: </label>'.$title.' <span><span><strong></br> Price: </strong>'.$extprice.'  </span></li>';
+		$ext_data .= '<li>'.$title.' <span><span><strong></br> Price: </strong>'.$extprice.'  </span></li>';
 	}
 }
 
 $passengerCost = $passengers * $cruise_price;
-$cabinCost = $cabins * $cruise_price + $cabinCost;
-echo 'cruise: '.$cruise_price;
-$totalCost = $passengerCost + $ext_price;
+$cabinCost = $cabins * $cruise_price;
+// echo 'cruise: '.$cruise_price;
+$totalCost = $passengerCost + $ext_price + $cabinCost;
 $totalCost = _currency_format($totalCost, true);
 $passengerCost = _currency_format($passengerCost, true);
 $cabinCost = _currency_format($cabinCost, true);
@@ -57,13 +57,20 @@ $extensionCost = _currency_format($ext_price, true);
 
 // print_r($prices);
 ?>
+<script>
+jQuery(function($){
+
+	$('#input_20_2').val(res)
+	UFGStorage['post_id']
+})
+	</script>
 <div id="contact_quote">
 	<ul>
-		<li><label>Ship:</label><span><?= $ship; ?></span></li>
+		<li><label>Ship:</label><span class="ship"><?= $ship; ?></span></li>
 		<li><label>Cruise:</label><span><span><?= get_the_title($prod_id) ?></span></li>
-		<li><label>Departure Date:</label><span><span><?= @$_POST['date']; ?></span></li>
-		<li><label>cabin:</label><span><span><?= $cabins; ?> x <?= $cruise_price ?>= </span><strong><?= $cabinCost; ?></strong></li>
-		<li><label>Guest:</label><span><span><?= @$_POST['passenger']; ?> x Passengers</span><strong><?= $passengerCost; ?></strong></li>
+		<li><label>Departure Date:</label><span><span class="date"><?= $_POST['date']; ?></span></li>
+		<li><label>cabin:</label><span><span><?= $cabins; ?> x Cabins</span><strong><?= $cabinCost; ?></strong></li>
+		<li><label>Guest:</label><span><span><?= $_POST['passenger']; ?> x Passengers</span><strong><?= $passengerCost; ?></strong></li>
 		<?php echo $ext_data; ?>
 	</ul>
 	<div class="quotetotal">
