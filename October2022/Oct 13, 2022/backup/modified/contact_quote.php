@@ -42,22 +42,16 @@ if( $extension_ids ) {
 				$extprice += $regular_price;	
 			}
 			// echo $ext_price;
-
 		}
-		$extprice = _currency_format($extprice, true);
-		$ext_data .= '<li>'.$title.' <span><span><strong></br> Price: </strong>'.$extprice.'  </span></li>';
-		
-		// echo'
-		// <script>
-		// 	$("#input_20_'.$e_id.'").val( '. $title .' );
-		// 	'.$e_id++.'
-		// 	$("#input_20_'.$e_id.'").val( '. $extprice .' );
-		// 	'.$e_id++.'
-		// </script>';
 		echo '$("#input_20_'.$e_id.'").val( '. $title .' );';
 		$e_id++; 
 		echo '$("#input_20_'.$e_id.'").val( '. $extprice .' );';
 		$e_id++;
+
+		$extprice = _currency_format($extprice, true);
+		$ext_data .= '<li>'.$title.' <span><span><strong></br> Price: </strong>'.$extprice.'  </span></li>';
+
+
 	}
 }
 
@@ -65,6 +59,8 @@ $passengerCost = $passengers * $cruise_price;
 $cabinCost = $cabins * $cruise_price;
 // echo 'cruise: '.$cruise_price;
 $totalCost = $passengerCost + $ext_price + $cabinCost;
+echo '<script> $("#input_20_44").val( "'. $ship .'" );
+$("#input_20_45").val( "'. $totalCost .'" ); </script>';
 $totalCost = _currency_format($totalCost, true);
 $passengerCost = _currency_format($passengerCost, true);
 $cabinCost = _currency_format($cabinCost, true);
@@ -81,7 +77,11 @@ $extensionCost = _currency_format($ext_price, true);
 		<li><label>cabin:</label><span><span><?= $cabins; ?> x Cabins</span><strong><?= $cabinCost; ?></strong></li>
 		<input type="hidden" class="paas" value="<?php echo $_POST['passenger'] ?>">
 		<li><label>Guest:</label><span><span><?= $_POST['passenger']; ?> x Passengers</span><strong><?= $passengerCost; ?></strong></li>
-		<?php echo $ext_data; ?>
+		<?php 
+		echo $ext_data;
+		echo '$("#input_20_44").val( '. $ship .' );
+			  $("#input_20_45").val( '. $totalCost .' );';
+		?>
 	</ul>
 	<div class="quotetotal">
 		<label>Totals:</label>
