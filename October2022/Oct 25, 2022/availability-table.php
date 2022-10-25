@@ -119,8 +119,11 @@ function jscode_avaibility() {
             var availability_table_field_nonce = '<?php echo wp_create_nonce('availability_table_field_nonce'); ?>';
             var availability_table_more = true;
 
-                     $('.cabin-select').val($('.cabin-select').val());
-         $('.passenger-select').val($('.passenger-select').val());
+             setTimeout(function() { 
+                 $('.cabin-select').val('No of Cabins');
+                 $('.passenger-select').html('<option>No of Passengers</option>');
+             }, 500);
+
 
             function setUfgStorage(obj) {
                 localStorage.setItem('UFGStorage', JSON.stringify(obj))
@@ -268,10 +271,6 @@ function jscode_avaibility() {
             $(this).closest('.accordion-body').find('.pass-val').hide(); 
         });
 
-
-        if(!($('.passenger-select').val() > 0)) {
-            $('.cabin-select').val('select cabin')
-        }
 
         for (let i = 0; i < 4; i++) {
             var id = 36
