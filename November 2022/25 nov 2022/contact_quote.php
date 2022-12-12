@@ -68,7 +68,8 @@ if( $extension_ids ) {
 $passengerCost = $passengers * $price;
 $cabinCost = $cabins * $price;
 // echo 'cruise: '.$cruise_price;
-$totalCost = $passengerCost + $ext_price + $cabinCost;
+$totalCost = $passengerCost + $ext_price;// without cabin
+// $totalCost = $passengerCost + $ext_price + $cabinCost;//with cabin
 // INSERT cruise and total price in hidden fields 
 ?>
 
@@ -107,19 +108,20 @@ $extensionCost = _currency_format($ext_price, true);
 ?>
 <div id="contact_quote" class="box_1 style_box inquire_sec">
 	<ul>
+		<h4>Cruise Summary</h4>
 		<li><label>Ship:</label><span class="ship"><?=  $ship_name; ?></span></li>
 		<li><label>Cruise:</label><span><span><?= get_the_title($prod_id) ?></span></li>
 		<li><label>Departure Date:</label><span><span class="date"><?= $_POST['date']; ?></span></li>
 		<input type="hidden" class="cabin" value="<?php echo $cabins ?>">
-		<li><label>Cabin:</label><span><span><?= $cabins; ?> x </span><strong><?= $cabinCost; ?></strong></li>
+		<li><label>Cabin:</label><span><span> <?= $cabins; ?> x Lower Deck Cabins </span></li>
 		<input type="hidden" class="paas" value="<?php echo $_POST['passenger'] ?>">
-		<li><label>Passengers:</label><span><span><?= $_POST['passenger']; ?> x </span><strong><?= $passengerCost; ?></strong></li>
+		<li><label>Passengers:</label><span><span> <?= $_POST['passenger']; ?> x  Passengers at </span><strong><?= $passengerCost; ?></strong></li>
 		<?php echo $ext_data; ?>
 	</ul>
 	<div class="quotetotal">
 		<label>Totals:</label>
 		<ul>
-			<li><label>Total Deposit:</label><span><?= $totalCost; ?></span></li>
+			<li><label>Estimated Budget:</label><span><?= $totalCost; ?></span></li>
 		</ul>
 	</div>
 </div>
